@@ -41,18 +41,36 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
   };
 
   const handleLogout = () => {
+    console.log('=== Logout Process Started ===');
+    
     // Clear token from localStorage
     if (typeof window !== 'undefined') {
+      // Debug: Show all localStorage items before clearing
+      console.log('Before clear - localStorage items:', Object.keys(localStorage));
+      console.log('Token exists:', !!localStorage.getItem('token'));
+      
+      // Clear token
       localStorage.removeItem('token');
+      
       // Clear all selected chat IDs
       Object.keys(localStorage).forEach(key => {
         if (key.startsWith('selectedChatId_')) {
+          console.log('Removing:', key);
           localStorage.removeItem(key);
         }
       });
+      
+      // Debug: Show localStorage after clearing
+      console.log('After clear - localStorage items:', Object.keys(localStorage));
+      console.log('Token exists after clear:', !!localStorage.getItem('token'));
+      
+      // Force clear everything as backup
+      localStorage.clear();
+      console.log('localStorage cleared completely');
     }
     
     // Redirect to login
+    console.log('Redirecting to login...');
     window.location.href = '/auth/login';
   };
 
