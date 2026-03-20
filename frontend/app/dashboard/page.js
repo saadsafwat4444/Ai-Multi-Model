@@ -38,6 +38,7 @@ export default function Dashboard() {
   const model = searchParams.get("model") || "gemini"; 
   const [loading, setLoading] = useState(true);
   const [selectedChatId, setSelectedChatId] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const loadChat = async () => {
     if (typeof window !== 'undefined') {
