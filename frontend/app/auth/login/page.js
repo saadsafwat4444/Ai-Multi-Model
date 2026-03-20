@@ -12,7 +12,17 @@ export default function Login() {
     // Check if user is already authenticated
     const checkAuth = async () => {
       try {
-        const res = await fetch("/api/auth/check", { credentials: "include" });
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.log("No token found in localStorage");
+          return;
+        }
+
+        const res = await fetch("/api/auth/check", { 
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (res.ok) {
           // User is authenticated, redirect to dashboard
           router.push("/dashboard");

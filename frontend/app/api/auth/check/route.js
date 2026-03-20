@@ -4,16 +4,15 @@ export async function GET(request) {
   console.log('=== Auth Check API Route ===');
   
   try {
-    // Get all cookies for debugging
-    const cookies = request.cookies;
-    console.log('All cookies:', cookies.getAll());
+    // Get Authorization header instead of cookies
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader ? authHeader.replace('Bearer ', '') : null;
     
-    const token = cookies.get('token')?.value;
     console.log('Token found:', !!token);
     console.log('Token value:', token ? token.substring(0, 20) + '...' : 'null');
 
     if (!token) {
-      console.log('No token found in cookies');
+      console.log('No token found in authorization header');
       return NextResponse.json({ error: 'No token found' }, { status: 401 });
     }
 
@@ -27,7 +26,6 @@ export async function GET(request) {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
     });
 
     console.log('Backend response status:', response.status);

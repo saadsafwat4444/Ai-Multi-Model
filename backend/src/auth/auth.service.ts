@@ -52,4 +52,12 @@ export class AuthService {
     console.log('Step 7: JWT token generated successfully');
     return { user, token };
   }
+
+  verifyToken(token: string) {
+    try {
+      return jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      throw new Error('Invalid token');
+    }
+  }
 }

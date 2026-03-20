@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -10,6 +10,25 @@ export class AuthController {
     private authService: AuthService,
     private usersService: UsersService
   ) {}
+
+  // Store token endpoint for frontend
+  @Post('store-token')
+  async storeToken(@Body() body: { token: string }, @Res({ passthrough: true }) res: Response) {
+    try {
+      // Verify the token first
+      const decoded = this.authService.verifyToken(body.token) as any;
+      
+      // Return user data with token
+      const user = await this.usersService.findById(decoded.userId);
+      return { 
+        success: true, 
+        user: user,
+        token: body.token 
+      };
+    } catch (error) {
+      return { success: false, error: 'Invalid token' };
+    }
+  }
 
   // Get current user data
   @Get('me')
@@ -66,7 +85,7 @@ export class AuthController {
       });
       console.log('Redirecting to dashboard...');
 
-  return res.redirect('https://ai-multi-model-eta.vercel.app/dashboard');
+  return res.redirect('https://ai-multi-model-eta.vercel.app/auth/callback');
     } catch (error) {
       console.error('Google login error:', error);
       return res.status(500).send('Google Auth Failed');
