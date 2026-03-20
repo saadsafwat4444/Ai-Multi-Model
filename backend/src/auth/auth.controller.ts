@@ -30,6 +30,22 @@ export class AuthController {
     }
   }
 
+  // Logout endpoint
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  async logout(@Res({ passthrough: true }) res: Response) {
+    // Clear the cookie if it exists
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      path: '/',
+      domain: '.vercel.app'
+    });
+    
+    return { success: true, message: 'Logged out successfully' };
+  }
+
   // Get current user data
   @Get('me')
   @UseGuards(JwtAuthGuard)

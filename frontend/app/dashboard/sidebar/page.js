@@ -40,8 +40,26 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
     ));
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     console.log('=== Logout Process Started ===');
+    
+    try {
+      // Call backend logout endpoint
+      const response = await fetch(`${API_URL}/auth/logout`, {
+        method: 'POST',
+        headers: getAuthHeaders()
+      });
+      
+      console.log('Backend logout response:', response.status);
+      
+      if (response.ok) {
+        console.log('Backend logout successful');
+      } else {
+        console.log('Backend logout failed, but continuing with client-side logout');
+      }
+    } catch (error) {
+      console.log('Backend logout error, continuing with client-side logout:', error);
+    }
     
     // Clear token from localStorage
     if (typeof window !== 'undefined') {
