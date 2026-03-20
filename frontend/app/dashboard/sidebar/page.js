@@ -40,6 +40,22 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
     ));
   };
 
+  const handleLogout = () => {
+    // Clear token from localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      // Clear all selected chat IDs
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('selectedChatId_')) {
+          localStorage.removeItem(key);
+        }
+      });
+    }
+    
+    // Redirect to login
+    window.location.href = '/auth/login';
+  };
+
   const handleDeleteChat = async (chatId) => {
     try {
       const res = await fetch(`${API_URL}/chat/${chatId}`, {
@@ -73,6 +89,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
           window.location.reload();
         }, 1900);
       } else {
+        alert('Error deleting chat. Please try again.');
         console.error('Failed to delete chat:', res.status);
         alert('Failed to delete chat. Please try again.');
       }
@@ -149,16 +166,25 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         {user && (
-          <div className="flex items-center mb-6">
-            <img
-              src={user.avatar || 'https://via.placeholder.com/150'}
-              alt={user.name || 'User'}
-              className="w-12 h-12 rounded-full object-cover"
-            />
-            <div className="ml-3">
-              <p className="font-semibold text-sm sm:text-base">{user.name || 'User'}</p>
-              <p className="text-xs text-gray-400 hidden sm:block">{user.email || 'user@example.com'}</p>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <img
+                src={user.avatar || 'https://via.placeholder.com/150'}
+                alt={user.name || 'User'}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <div className="ml-3">
+                <p className="font-semibold text-sm sm:text-base">{user.name || 'User'}</p>
+                <p className="text-xs text-gray-400 hidden sm:block">{user.email || 'user@example.com'}</p>
+              </div>
             </div>
+            <button
+              onClick={handleLogout}
+              className="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-gray-800 transition-colors"
+              title="Logout"
+            >
+              🚪
+            </button>
           </div>
         )}
 
