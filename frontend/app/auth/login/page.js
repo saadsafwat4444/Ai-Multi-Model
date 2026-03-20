@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { API_URL } from "@/utils/config";
+import { getAuthToken } from "@/utils/auth";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -12,9 +13,9 @@ export default function Login() {
     // Check if user is already authenticated
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = getAuthToken();
         if (!token) {
-          console.log("No token found in localStorage");
+          console.log("No token found in sessionStorage");
           return;
         }
 

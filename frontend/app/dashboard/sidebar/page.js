@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { API_URL } from "@/utils/config";
-import { getAuthHeaders } from "@/utils/auth";
+import { getAuthHeaders, removeAuthToken } from "@/utils/auth";
 import EditTitleModal from '../components/EditTitleModal';
 
 export default function Sidebar({ onSelectChat, model, refreshKey }) {
@@ -61,30 +61,20 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
       console.log('Backend logout error, continuing with client-side logout:', error);
     }
     
-    // Clear token from localStorage
+    // Clear token from sessionStorage
     if (typeof window !== 'undefined') {
-      // Debug: Show all localStorage items before clearing
-      console.log('Before clear - localStorage items:', Object.keys(localStorage));
-      console.log('Token exists:', !!localStorage.getItem('token'));
+      // Debug: Show token before clearing
+      console.log('Token exists before clear:', !!getAuthToken());
       
-      // Clear token
-      localStorage.removeItem('token');
+      // Clear token using helper function
+      removeAuthToken();
       
-      // Clear all selected chat IDs
-      Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('selectedChatId_')) {
-          console.log('Removing:', key);
-          localStorage.removeItem(key);
-        }
-      });
+      // Debug: Show token after clearing
+      console.log('Token exists after clear:', !!getAuthToken());
       
-      // Debug: Show localStorage after clearing
-      console.log('After clear - localStorage items:', Object.keys(localStorage));
-      console.log('Token exists after clear:', !!localStorage.getItem('token'));
-      
-      // Force clear everything as backup
+      // Clear localStorage as backup (for any old data)
       localStorage.clear();
-      console.log('localStorage cleared completely');
+      console.log('localStorage cleared as backup');
     }
     
     // Redirect to login
