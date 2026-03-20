@@ -113,7 +113,7 @@ export default function Login() {
   const handleGoogleLogin = () => {
     setLoading(true);
     // توجه المستخدم مباشرة لbackend لبدء Google OAuth
-    window.location.href = "http://localhost:9999/auth/google";
+    window.location.href = "https://ai-multi-model-production-ef6f.up.railway.app/auth/google";
   };
 
   return (

@@ -1,7 +1,7 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import { toast } from 'react-toastify';
+import { useRouter } from "next/navigation";
+import { API_URL } from "@/utils/config";
 import EditTitleModal from '../components/EditTitleModal';
 
 export default function Sidebar({ onSelectChat, model, refreshKey }) {
@@ -15,7 +15,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
   // Function to fetch history
   const fetchHistory = async () => {
     try {
-      const res = await fetch(`http://localhost:9999/chat/history${model ? `?model=${model}` : ''}`, { 
+      const res = await fetch(`${API_URL}/chat/history${model ? `?model=${model}` : ''}`, { 
         credentials: "include",
         headers: {
           "Authorization": `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
@@ -44,7 +44,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
 
   const handleDeleteChat = async (chatId) => {
     try {
-      const res = await fetch(`http://localhost:9999/chat/${chatId}`, {
+      const res = await fetch(`${API_URL}/chat/${chatId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {
@@ -90,7 +90,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:9999/auth/me", { 
+        const res = await fetch(`${API_URL}/auth/me`, { 
           credentials: "include",
           headers: {
             "Authorization": `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`

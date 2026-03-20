@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { API_URL } from "@/utils/config";
 
 export default function Main({ selectedChatId, model }) {
   const [messages, setMessages] = useState([]);
@@ -20,7 +21,7 @@ export default function Main({ selectedChatId, model }) {
     const fetchMessages = async () => {
       try {
         const res = await fetch(
-          `http://localhost:9999/chat/${selectedChatId}/messages`,
+          `${API_URL}/chat/${selectedChatId}/messages`,
           { 
             credentials: "include",
             headers: {
@@ -76,7 +77,7 @@ export default function Main({ selectedChatId, model }) {
     try {
       console.log("Sending message with chatId:", chatId, "model:", model, "message:", userMessage);
       
-      const res = await fetch("http://localhost:9999/chat", {
+      const res = await fetch(`${API_URL}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

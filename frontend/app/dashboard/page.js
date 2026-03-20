@@ -1,7 +1,7 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/utils/config";
 import Header from "./header/page";
 import Sidebar from "./sidebar/page";
 import Main from "./main/page";
@@ -23,7 +23,7 @@ export default function Dashboard() {
         setSelectedChatId(chatId);
       } else {
         try {
-          const res = await fetch(`http://localhost:9999/chat/history?model=${model}`, { 
+          const res = await fetch(`${API_URL}/chat/history?model=${model}`, { 
             credentials: "include" 
           });
           if (res.ok) {

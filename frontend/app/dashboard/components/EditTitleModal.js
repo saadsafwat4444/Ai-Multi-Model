@@ -1,6 +1,6 @@
 "use client";
-
 import { useState } from "react";
+import { API_URL } from "@/utils/config";
 
 export default function EditTitleModal({ isOpen, onClose, chatTitle, chatId, onUpdate }) {
   const [title, setTitle] = useState(chatTitle || "");
@@ -17,7 +17,7 @@ export default function EditTitleModal({ isOpen, onClose, chatTitle, chatId, onU
     setLoading(true);
     
     try {
-      const response = await fetch(`http://localhost:9999/chat/${chatId}/title`, {
+      const response = await fetch(`${API_URL}/chat/${chatId}/title`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
