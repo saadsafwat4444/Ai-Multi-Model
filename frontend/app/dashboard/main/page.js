@@ -77,7 +77,10 @@ export default function Main({ selectedChatId, model }) {
       
       const res = await fetch(`${API_URL}/chat`, {
         method: "POST",
-        headers: getAuthHeaders(),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
         body: JSON.stringify({
           chatId: chatId, // Don't use null fallback, send actual chatId
           selectedModel: model,

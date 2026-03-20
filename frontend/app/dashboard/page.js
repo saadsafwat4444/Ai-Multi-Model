@@ -6,6 +6,30 @@ import { getAuthHeaders } from "@/utils/auth";
 import Header from "./header/page";
 import Sidebar from "./sidebar/page";
 import Main from "./main/page";
+
+// Simple logout button component
+const LogoutButton = () => {
+  const handleLogout = () => {
+    // Clear sessionStorage
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('token');
+      localStorage.clear();
+    }
+    
+    // Redirect to login
+    window.location.href = '/auth/login';
+  };
+
+  return (
+    <button
+      onClick={handleLogout}
+      className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-600 transition-colors z-50"
+      title="Logout"
+    >
+      🚪 Logout
+    </button>
+  );
+};
 import { useSearchParams } from "next/navigation";
 
 export default function Dashboard() {
@@ -80,10 +104,11 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-900 text-gray-100">
-      <Header model={model} />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar onSelectChat={setSelectedChatId} model={model} />
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      <Header />
+      <LogoutButton />
+      <div className="flex">
+        <Sidebar onSelectChat={setSelectedChatId} model={model} refreshKey={refreshKey} />
         <Main selectedChatId={selectedChatId} model={model} />
       </div>
     </div>

@@ -38,6 +38,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
     setHistory(prev => prev.map(chat => 
       chat.id === chatId ? { ...chat, title: newTitle } : chat
     ));
+    fetchHistory();
   };
 
   const handleLogout = async () => {
@@ -61,20 +62,30 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
       console.log('Backend logout error, continuing with client-side logout:', error);
     }
     
-    // Clear token from sessionStorage
+    // Clear token from localStorage
     if (typeof window !== 'undefined') {
-      // Debug: Show token before clearing
-      console.log('Token exists before clear:', !!getAuthToken());
+      // Debug: Show all localStorage items before clearing
+      console.log('Before clear - localStorage items:', Object.keys(localStorage));
+      console.log('Token exists:', !!localStorage.getItem('token'));
       
-      // Clear token using helper function
-      removeAuthToken();
+      // Clear token
+      localStorage.removeItem('token');
       
-      // Debug: Show token after clearing
-      console.log('Token exists after clear:', !!getAuthToken());
+      // Clear all selected chat IDs
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('selectedChatId_')) {
+          console.log('Removing:', key);
+          localStorage.removeItem(key);
+        }
+      });
       
-      // Clear localStorage as backup (for any old data)
+      // Debug: Show localStorage after clearing
+      console.log('After clear - localStorage items:', Object.keys(localStorage));
+      console.log('Token exists after clear:', !!localStorage.getItem('token'));
+      
+      // Force clear everything as backup
       localStorage.clear();
-      console.log('localStorage cleared as backup');
+      console.log('localStorage cleared completely');
     }
     
     // Redirect to login
@@ -192,7 +203,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         {user && (
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center mb-6">
             <div className="flex items-center">
               <img
                 src={user.avatar || 'https://via.placeholder.com/150'}
@@ -204,13 +215,6 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
                 <p className="text-xs text-gray-400 hidden sm:block">{user.email || 'user@example.com'}</p>
               </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-gray-800 transition-colors"
-              title="Logout"
-            >
-              🚪
-            </button>
           </div>
         )}
 

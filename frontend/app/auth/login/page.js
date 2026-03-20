@@ -19,11 +19,19 @@ export default function Login() {
           return;
         }
 
+        console.log('=== Login Auth Check ===');
+        console.log('API_URL:', API_URL);
+        console.log('Token from sessionStorage:', !!token);
+        console.log('Token value:', token ? token.substring(0, 20) + '...' : 'null');
+        
         const res = await fetch(`${API_URL}/auth/me`, { 
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
+
+        console.log('Auth check response status:', res.status);
+        console.log('Auth check response ok:', res.ok);
         if (res.ok) {
           // User is authenticated, redirect to dashboard
           router.push("/dashboard");

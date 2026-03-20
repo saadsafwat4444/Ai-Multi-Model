@@ -20,7 +20,11 @@ export default function EditTitleModal({ isOpen, onClose, chatTitle, chatId, onU
     try {
       const response = await fetch(`${API_URL}/chat/${chatId}/title`, {
         method: 'PUT',
-        headers: getAuthHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
+        },
+        credentials: 'include',
         body: JSON.stringify({ title: title.trim() })
       });
 
