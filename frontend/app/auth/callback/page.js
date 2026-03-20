@@ -21,9 +21,9 @@ export default function AuthCallback() {
         console.log('Token value:', token ? token.substring(0, 20) + '...' : 'null');
         
         if (token) {
-          // Store token in sessionStorage
-          setAuthToken(token);
-          console.log('Token stored in sessionStorage');
+          // Store token in localStorage
+          localStorage.setItem('token', token);
+          console.log('Token stored in localStorage');
           
           // Verify token with backend
           const verifyResponse = await fetch(`${API_URL}/auth/store-token`, {

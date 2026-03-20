@@ -26,7 +26,7 @@ export default function Dashboard() {
       } else {
         try {
           const res = await fetch(`${API_URL}/chat/history?model=${model}`, { 
-            credentials: "include" 
+            headers: getAuthHeaders()
           });
           if (res.ok) {
             const data = await res.json();
@@ -48,13 +48,7 @@ export default function Dashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Debug: Check if token exists in localStorage
-        console.log('=== Dashboard Auth Check ===');
-        const token = localStorage.getItem('token');
-        console.log('Token in localStorage:', !!token);
-        console.log('Token value:', token ? token.substring(0, 20) + '...' : 'null');
-        console.log('Auth headers:', getAuthHeaders());
-        
+                
         const response = await fetch(`${API_URL}/auth/me`, {
           headers: getAuthHeaders(),
         });

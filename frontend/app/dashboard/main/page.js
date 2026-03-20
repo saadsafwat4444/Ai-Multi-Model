@@ -75,12 +75,13 @@ export default function Main({ selectedChatId, model }) {
     try {
       console.log("Sending message with chatId:", chatId, "model:", model, "message:", userMessage);
       
+      console.log("=== Chat Request Debug ===");
+      console.log("Token in localStorage:", !!localStorage.getItem('token'));
+      console.log("Auth headers:", getAuthHeaders());
+      
       const res = await fetch(`${API_URL}/chat`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           chatId: chatId, // Don't use null fallback, send actual chatId
           selectedModel: model,

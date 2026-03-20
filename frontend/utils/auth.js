@@ -1,22 +1,22 @@
-// Helper function to get token from sessionStorage (more reliable than localStorage)
+// Helper function to get token from localStorage
 export const getAuthToken = () => {
   if (typeof window !== 'undefined') {
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   }
   return null;
 };
 
-// Helper function to set token in sessionStorage
+// Helper function to set token in localStorage
 export const setAuthToken = (token) => {
   if (typeof window !== 'undefined') {
-    sessionStorage.setItem('token', token);
+    localStorage.setItem('token', token);
   }
 };
 
-// Helper function to remove token from sessionStorage
+// Helper function to remove token from localStorage
 export const removeAuthToken = () => {
   if (typeof window !== 'undefined') {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
   }
 };
 

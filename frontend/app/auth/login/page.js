@@ -13,9 +13,9 @@ export default function Login() {
     // Check if user is already authenticated
     const checkAuth = async () => {
       try {
-        const token = getAuthToken();
+        const token = localStorage.getItem('token');
         if (!token) {
-          console.log("No token found in sessionStorage");
+          console.log("No token found in localStorage");
           return;
         }
 
