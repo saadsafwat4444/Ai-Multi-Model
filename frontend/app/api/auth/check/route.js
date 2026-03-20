@@ -2,12 +2,14 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request) {
   console.log('=== Auth Check API Route ===');
+  console.log('All headers:', Object.fromEntries(request.headers.entries()));
   
   try {
     // Get Authorization header instead of cookies
     const authHeader = request.headers.get('authorization');
     const token = authHeader ? authHeader.replace('Bearer ', '') : null;
     
+    console.log('Auth header:', authHeader);
     console.log('Token found:', !!token);
     console.log('Token value:', token ? token.substring(0, 20) + '...' : 'null');
 
