@@ -85,7 +85,8 @@ export class AuthController {
       });
       console.log('Redirecting to dashboard...');
 
-  return res.redirect('https://ai-multi-model-eta.vercel.app/auth/callback');
+  // Redirect with token in URL parameters (more reliable than cookies)
+      return res.redirect(`https://ai-multi-model-eta.vercel.app/auth/callback?token=${encodeURIComponent(token)}`);
     } catch (error) {
       console.error('Google login error:', error);
       return res.status(500).send('Google Auth Failed');

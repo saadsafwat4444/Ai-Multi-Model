@@ -11,57 +11,39 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        // First, get token from backend using cookies
-        const response = await fetch(`${API_URL}/auth/me`, {
-          credentials: 'include',
-        });
+        // Get token from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        
+        console.log('=== Token Debug ===');
+        console.log('Token from URL:', !!token);
+        console.log('Token value:', token ? token.substring(0, 20) + '...' : 'null');
+        
+        if (token) {
+          // Store token in localStorage
+          localStorage.setItem('token', token);
+          console.log('Token stored in localStorage');
+          
+          // Verify token with backend
+          const verifyResponse = await fetch(`${API_URL}/auth/store-token`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token }),
+          });
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log('User authenticated, getting token...');
-          
-          // Try to extract token from cookies (this is a workaround)
-          // In a real app, you'd get the token from the backend response
-          const cookies = document.cookie.split(';');
-          let token = null;
-          
-          for (const cookie of cookies) {
-            const [name, value] = cookie.trim().split('=');
-            if (name === 'token') {
-              token = value;
-              break;
-            }
-          }
-          
-          if (token) {
-            // Store token in localStorage
-            localStorage.setItem('token', token);
-            console.log('Token stored in localStorage');
-            
-            // Verify token with backend
-            const verifyResponse = await fetch(`${API_URL}/auth/store-token`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ token }),
-            });
-
-            if (verifyResponse.ok) {
-              const verifyData = await verifyResponse.json();
-              console.log('Token verified successfully:', verifyData);
-              router.push('/dashboard');
-            } else {
-              console.error('Failed to verify token');
-              router.push('/auth/login?error=verify_failed');
-            }
+          if (verifyResponse.ok) {
+            const verifyData = await verifyResponse.json();
+            console.log('Token verified successfully:', verifyData);
+            router.push('/dashboard');
           } else {
-            console.error('No token found in cookies');
-            router.push('/auth/login?error=no_cookie_token');
+            console.error('Failed to verify token');
+            router.push('/auth/login?error=verify_failed');
           }
         } else {
-          console.error('Authentication failed');
-          router.push('/auth/login?error=auth_failed');
+          console.error('No token found in URL parameters');
+          router.push('/auth/login?error=no_url_token');
         }
       } catch (err) {
         console.error('Auth callback error:', err);
