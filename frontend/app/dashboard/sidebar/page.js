@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { API_URL } from "@/utils/config";
 import { getAuthHeaders, removeAuthToken } from "@/utils/auth";
 import EditTitleModal from '../components/EditTitleModal';
