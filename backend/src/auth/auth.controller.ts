@@ -52,6 +52,7 @@ export class AuthController {
   sameSite: 'none',      // 🔥 مهم عشان cross-site
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/',
+    domain: '.vercel.app'
 });
 
       console.log('Token set in cookie:', token ? 'yes' : 'no');

@@ -10,7 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({
-    origin: true, // مؤقتًا يخلي أي frontend يشتغل
+    origin: ['https://ai-multi-model-eta.vercel.app'],  // مؤقتًا يخلي أي frontend يشتغل
     credentials: true,
   });
 

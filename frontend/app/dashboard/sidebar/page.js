@@ -92,9 +92,9 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
       try {
         const res = await fetch(`${API_URL}/auth/me`, { 
           credentials: "include",
-          headers: {
-            "Authorization": `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
-          }
+          // headers: {
+          //   "Authorization": `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
+          // }
         });
         if (res.ok) {
           const data = await res.json();
