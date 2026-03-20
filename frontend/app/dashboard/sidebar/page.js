@@ -94,11 +94,19 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
   };
 
   const handleDeleteChat = async (chatId) => {
+    console.log('=== Delete Chat Debug ===');
+    console.log('Deleting chat ID:', chatId);
+    console.log('Token exists:', !!localStorage.getItem('token'));
+    console.log('Auth headers:', getAuthHeaders());
+    
     try {
       const res = await fetch(`${API_URL}/chat/${chatId}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
       });
+      
+      console.log('Delete response status:', res.status);
+      console.log('Delete response ok:', res.ok);
       
       if (res.ok) {
         // Remove from local state immediately
@@ -120,15 +128,9 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
         
         // Show success message
         toast.success('Chat deleted successfully!');
-        
-        // Wait 1.5 seconds to show the deletion effect, then refresh
-        setTimeout(() => {
-          window.location.reload();
-        }, 1900);
       } else {
-        alert('Error deleting chat. Please try again.');
         console.error('Failed to delete chat:', res.status);
-        alert('Failed to delete chat. Please try again.');
+        alert('Error deleting chat. Please try again.');
       }
     } catch (err) {
       console.error("Error deleting chat:", err);

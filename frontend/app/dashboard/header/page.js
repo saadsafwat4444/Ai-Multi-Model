@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 
 export default function Header({ model }) {
   const [modelDropdown, setModelDropdown] = useState(false);
-  const [menuDropdown, setMenuDropdown] = useState(false);
   const router = useRouter();
 
   const handleModelChange = (selectedModel) => {
@@ -13,7 +12,17 @@ export default function Header({ model }) {
     setModelDropdown(false);
   };
 
-  
+  const handleLogout = () => {
+    // Clear localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.clear();
+    }
+    
+    // Redirect to login
+    window.location.href = '/auth/login';
+  };
+
   return (
     <header className="flex flex-col sm:flex-row justify-between items-center p-4 bg-gray-900 shadow-md">
       <div className="flex items-center mb-2 sm:mb-0">
@@ -53,7 +62,14 @@ export default function Header({ model }) {
           )}
         </div>
 
-              </div>
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600 transition-colors"
+          title="Logout"
+        >
+          Logout
+        </button>
+      </div>
     </header>
   );
 }
