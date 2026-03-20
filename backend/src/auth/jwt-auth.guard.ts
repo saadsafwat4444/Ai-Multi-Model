@@ -16,10 +16,18 @@ export class JwtAuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const req: Request = context.switchToHttp().getRequest();
 
-    console.log("Cookies in request:", req.cookies);
-
-    // نجيب التوكن من الكوكيز
-    const token = req.cookies['token'];
+    // First try Authorization header (from localStorage)
+    const authHeader = req.headers['authorization'];
+    let token = null;
+    
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7); // Remove 'Bearer ' prefix
+      console.log("Token from Authorization header:", !!token);
+    } else {
+      // Fallback to cookies (for backward compatibility)
+      token = req.cookies?.['token'];
+      console.log("Token from cookies:", !!token);
+    }
 
     if (!token) {
       throw new UnauthorizedException('No token found'); // لو مفيش توكن → رفض الوصول

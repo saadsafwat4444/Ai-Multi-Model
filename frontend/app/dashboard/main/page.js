@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API_URL } from "@/utils/config";
+import { getAuthHeaders } from "@/utils/auth";
 
 export default function Main({ selectedChatId, model }) {
   const [messages, setMessages] = useState([]);
@@ -23,10 +24,7 @@ export default function Main({ selectedChatId, model }) {
         const res = await fetch(
           `${API_URL}/chat/${selectedChatId}/messages`,
           { 
-            credentials: "include",
-            headers: {
-              "Authorization": `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
-            }
+            headers: getAuthHeaders()
           }
         );
 
@@ -79,10 +77,7 @@ export default function Main({ selectedChatId, model }) {
       
       const res = await fetch(`${API_URL}/chat`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           chatId: chatId, // Don't use null fallback, send actual chatId
           selectedModel: model,

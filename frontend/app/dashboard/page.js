@@ -54,7 +54,7 @@ export default function Dashboard() {
         console.log('Token value:', token ? token.substring(0, 20) + '...' : 'null');
         console.log('Auth headers:', getAuthHeaders());
         
-        const response = await fetch("/api/auth/check", {
+        const response = await fetch(`${API_URL}/auth/me`, {
           headers: getAuthHeaders(),
         });
 

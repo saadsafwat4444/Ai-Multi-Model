@@ -1,8 +1,8 @@
- 
-"use client";
+ "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/utils/config";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function Login() {
           return;
         }
 
-        const res = await fetch("/api/auth/check", { 
+        const res = await fetch(`${API_URL}/auth/me`, { 
           headers: {
             'Authorization': `Bearer ${token}`
           }

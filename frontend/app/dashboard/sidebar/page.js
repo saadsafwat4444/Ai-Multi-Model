@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { API_URL } from "@/utils/config";
+import { getAuthHeaders } from "@/utils/auth";
 import EditTitleModal from '../components/EditTitleModal';
 
 export default function Sidebar({ onSelectChat, model, refreshKey }) {
@@ -16,10 +17,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
   const fetchHistory = async () => {
     try {
       const res = await fetch(`${API_URL}/chat/history${model ? `?model=${model}` : ''}`, { 
-        credentials: "include",
-        headers: {
-          "Authorization": `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
-        }
+        headers: getAuthHeaders()
       });
       if (res.ok) {
         const data = await res.json();
@@ -46,10 +44,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
     try {
       const res = await fetch(`${API_URL}/chat/${chatId}`, {
         method: 'DELETE',
-        credentials: 'include',
-        headers: {
-          "Authorization": `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
-        }
+        headers: getAuthHeaders()
       });
       
       if (res.ok) {
@@ -91,10 +86,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
     const fetchUser = async () => {
       try {
         const res = await fetch(`${API_URL}/auth/me`, { 
-          credentials: "include",
-          headers: {
-            "Authorization": `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
-          }
+          headers: getAuthHeaders()
         });
         if (res.ok) {
           const data = await res.json();
