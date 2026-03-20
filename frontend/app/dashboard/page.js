@@ -77,7 +77,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <Header model={model} />
-      <div className="flex flex-col lg:flex-row">
+      <div className="flex">
         <Sidebar onSelectChat={setSelectedChatId} model={model} refreshKey={refreshKey} />
         <Main selectedChatId={selectedChatId} model={model} />
       </div>

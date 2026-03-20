@@ -199,7 +199,7 @@ export default function Sidebar({ onSelectChat, model, refreshKey }) {
         />
       )}
 
-      <aside className={`fixed lg:relative lg:w-64 w-64 min-h-screen bg-gray-900 text-gray-100 shadow-lg p-4 flex flex-col z-50 transform transition-transform duration-300 ${
+      <aside className={`fixed lg:relative lg:w-64 w-64 h-screen bg-gray-900 text-gray-100 shadow-lg p-4 flex flex-col z-50 transform transition-transform duration-300 ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         {user && (
