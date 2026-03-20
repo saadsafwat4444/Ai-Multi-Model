@@ -57,7 +57,7 @@ export class AuthController {
       console.log('Token set in cookie:', token ? 'yes' : 'no');
       console.log('Redirecting to dashboard...');
 
-      return res.redirect('http://localhost:3000/dashboard');
+  return res.redirect('https://ai-multi-model-eta.vercel.app/dashboard');
     } catch (error) {
       console.error('Google login error:', error);
       return res.status(500).send('Google Auth Failed');
