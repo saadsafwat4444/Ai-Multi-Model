@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { API_URL } from "@/utils/config";
+import { getAuthHeaders } from "@/utils/auth";
 import Header from "./header/page";
 import Sidebar from "./sidebar/page";
 import Main from "./main/page";
@@ -47,7 +48,7 @@ export default function Dashboard() {
     const checkAuth = async () => {
       try {
         const response = await fetch("/api/auth/check", {
-          credentials: "include",
+          headers: getAuthHeaders(),
         });
 
         if (!response.ok) {
