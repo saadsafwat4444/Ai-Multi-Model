@@ -52,9 +52,18 @@ export class AuthController {
   sameSite: 'none',      // 🔥 مهم عشان cross-site
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/',
+  domain: '.vercel.app'  // 🔥 مهم عشان cross-origin
 });
 
       console.log('Token set in cookie:', token ? 'yes' : 'no');
+      console.log('Cookie settings:', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: '/',
+        domain: '.vercel.app'
+      });
       console.log('Redirecting to dashboard...');
 
   return res.redirect('https://ai-multi-model-eta.vercel.app/dashboard');
