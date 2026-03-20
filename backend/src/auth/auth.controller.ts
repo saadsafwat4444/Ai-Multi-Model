@@ -46,14 +46,13 @@ export class AuthController {
       console.log('User:', user.name, user.email);
       console.log('Token generated:', token ? 'yes' : 'no');
 
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: false, // true في production مع HTTPS
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        domain: 'localhost',
-        path: '/',
-      });
+    res.cookie('token', token, {
+  httpOnly: true,
+  secure: true,          // 🔥 مهم
+  sameSite: 'none',      // 🔥 مهم عشان cross-site
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  path: '/',
+});
 
       console.log('Token set in cookie:', token ? 'yes' : 'no');
       console.log('Redirecting to dashboard...');
