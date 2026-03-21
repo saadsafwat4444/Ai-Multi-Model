@@ -172,11 +172,11 @@ export default function Main({ selectedChatId, model }) {
           )}
         </div>
 
-        <div className="flex space-x-2">
+        <div className="flex space-x-2  mt-15 ">
           <input
             type="text"
             placeholder="Type a message..."
-            className="flex-1 mt-20 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="flex-1 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
