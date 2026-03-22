@@ -1,1 +1,1 @@
-export const API_URL = "https://ai-multi-model-production-ef6f.up.railway.app";
+export const API_URL = "https://ai-multi-model-production-b634.up.railway.app";
